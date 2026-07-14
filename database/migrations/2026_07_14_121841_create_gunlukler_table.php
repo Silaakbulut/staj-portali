@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('gunlukler', function (Blueprint $table) {
         $table->id();//otomatik artan id 
 
-        $table->foreignId('user_id')->constrained()->onDelete('cascade');
-
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');//constrained() ile users tablosuna bağlanır ve onDelete('cascade') ile kullanıcı silindiğinde günlükler de silinir
+//foreignId() : günlüğün sahibini tutar
         $table->string('baslik');
 
         $table->text('aciklama');
