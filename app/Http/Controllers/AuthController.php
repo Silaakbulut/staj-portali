@@ -56,6 +56,11 @@ public function loginPost(Request $request)
         'email' => 'E-posta veya şifre hatalı.'
     ]);
 }
+public function logout()
+{
+    Auth::logout();
 
+    return redirect('/login');
+}
 
 }
