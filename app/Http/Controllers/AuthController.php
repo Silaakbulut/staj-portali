@@ -62,5 +62,26 @@ public function logout()
 
     return redirect('/login');
 }
+public function profil()
+{
+    $kullanici = Auth::user();
 
+    return view('auth.profil', compact('kullanici'));
+}
+public function profilGuncelle(Request $request)
+{
+    $request->validate([
+        'name' => 'required|max:255',
+        'email' => 'required|email|unique:users,email,' . Auth::id(),
+    ]);
+
+    $kullanici = Auth::user();
+
+    $kullanici->name = $request->name;
+    $kullanici->email = $request->email;
+
+    $kullanici->save();
+
+    return back()->with('success', 'Profil başarıyla güncellendi.');
+}
 }
