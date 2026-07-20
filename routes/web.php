@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SayfaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GunlukController;
+use App\Http\Controllers\AdminController;
 
 
 Route::get('/', function () {
@@ -71,3 +72,13 @@ Route::prefix('gunlukler')
         Route::delete('/{id}', 'destroy')->name('destroy');
 
     });
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/admin/ogrenciler/{user}', [AdminController::class, 'ogrenciDetay'])
+    ->name('admin.ogrenci.show');
+        Route::get('/admin/ogrenciler', [AdminController::class, 'ogrenciler'])
+    ->name('admin.ogrenciler');
+
+    Route::get('/admin', [AdminController::class, 'index'])
+        ->name('admin.index');
+
+});
