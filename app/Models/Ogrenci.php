@@ -10,7 +10,7 @@ class Ogrenci extends Model
     use HasFactory;
     protected $table = 'ogrenciler';//Bu model öğrenciler tablosnu kullanacak
 
-    protected $fillable = [
+    protected $fillable = [ 
         'ad',
         'soyad',
         'bolum',
