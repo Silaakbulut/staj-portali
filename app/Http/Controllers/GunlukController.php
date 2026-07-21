@@ -36,6 +36,37 @@ public function create(){
         'tarih' => 'required',
         'dosya' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120'
     ]);
+    $staj = Auth::user()->staj;
+
+if (!$staj) {
+    return back()
+        ->withErrors([
+            'tarih' => 'Lütfen önce profilinizden staj tarihlerinizi giriniz.'
+        ])
+        ->withInput();
+}
+
+if (
+    $request->tarih < $staj->baslangic_tarihi ||
+    $request->tarih > $staj->bitis_tarihi
+) {
+    return back()
+        ->withErrors([
+            'tarih' => 'Seçtiğiniz tarih staj tarihleri arasında değildir.'
+        ])
+        ->withInput();
+}
+if (
+    Auth::user()->gunlukler()
+        ->where('tarih', $request->tarih)
+        ->exists()
+) {
+    return back()
+        ->withErrors([
+            'tarih' => 'Bu tarih için zaten bir günlük eklediniz.'
+        ])
+        ->withInput();
+}
 
     $dosyaYolu = null;
 
@@ -67,6 +98,18 @@ public function create(){
         'aciklama'=>'required',
         'tarih'=>'required'
     ]);
+    $staj = Auth::user()->staj;
+
+if (
+    $request->tarih < $staj->baslangic_tarihi ||
+    $request->tarih > $staj->bitis_tarihi
+) {
+    return back()
+        ->withErrors([
+            'tarih' => 'Seçtiğiniz tarih staj tarihleri arasında değildir.'
+        ])
+        ->withInput();
+}
 
     $gunluk = Auth::user()->gunlukler()->findOrFail($id);
     $gunluk->update([

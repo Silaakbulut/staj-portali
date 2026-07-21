@@ -1,95 +1,154 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
 
-<div class="container mt-4">
+<div class="container-fluid">
 
-    <div class="mb-4">
-        <h2>Hoş Geldin, {{ Auth::user()->name }} </h2>
+    
+    <div class="card mb-4">
+
+        <div class="card-top"></div>
+
+        <div class="card-body">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-8">
+
+                    <h2 class="fw-bold text-bordo mb-2">
+
+                        Hoş Geldin, {{ Auth::user()->name }} 
+
+                    </h2>
+
+                    <p class="text-secondary mb-0">
+
+                        Staj sürecini buradan takip edebilir, günlüklerini yönetebilir ve ilerleme durumunu görüntüleyebilirsin.
+
+                    </p>
+
+                </div>
+
+                <div class="col-md-4 text-end">
+
+                    <i class="bi bi-mortarboard-fill"
+                       style="font-size:90px;color:#80002020;"></i>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
-<div class="row mt-4">
 
-    <div class="col-md-12">
 
-        <div class="card">
+@if($staj)
+
+{{-- İSTATİSTİKLER --}}
+<div class="row g-4 mb-5">
+
+    <div class="col-lg col-md-6">
+
+        <div class="card dashboard-card">
+
+            <div class="card-top"></div>
 
             <div class="card-body">
 
-                <h4>
-                    📌 Staj Durumu
-                </h4>
+                <i class="bi bi-calendar-check"></i>
+
+                <h2>{{ $toplamStajGunu }}</h2>
+
+                <p>Toplam Gün</p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
-                @if($staj)
+    <div class="col-lg col-md-6">
 
-                    <p>
-                        <strong>Başlangıç:</strong>
-                        {{ $staj->baslangic_tarihi }}
-                    </p>
+        <div class="card dashboard-card">
 
+            <div class="card-top"></div>
 
-                    <p>
-                        <strong>Bitiş:</strong>
-                        {{ $staj->bitis_tarihi }}
-                    </p>
+            <div class="card-body">
 
+                <i class="bi bi-journal-check"></i>
 
-                    <hr>
+                <h2>{{ $tamamlananGun }}</h2>
 
+                <p>Tamamlanan</p>
 
-                    <div class="row text-center">
+            </div>
 
+        </div>
 
-                        <div class="col-md-3">
-                            <h5>Toplam Gün</h5>
-                            <h3>
-                                {{ $toplamStajGunu }}
-                            </h3>
-                        </div>
+    </div>
 
 
-                        <div class="col-md-3">
-                            <h5>Tamamlanan</h5>
-                            <h3>
-                                {{ $tamamlananGun }}
-                            </h3>
-                        </div>
+    <div class="col-lg col-md-6">
+
+        <div class="card dashboard-card">
+
+            <div class="card-top"></div>
+
+            <div class="card-body">
+
+                <i class="bi bi-exclamation-circle"></i>
+
+                <h2>{{ $eksikGun }}</h2>
+
+                <p>Eksik Gün</p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
-                        <div class="col-md-3">
-                            <h5>Eksik</h5>
-                            <h3>
-                                {{ $eksikGun }}
-                            </h3>
-                        </div>
+    <div class="col-lg col-md-6">
+
+        <div class="card dashboard-card">
+
+            <div class="card-top"></div>
+
+            <div class="card-body">
+
+                <i class="bi bi-graph-up-arrow"></i>
+
+                <h2>%{{ $yuzde }}</h2>
+
+                <p>İlerleme</p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
-                        <div class="col-md-3">
-                            <h5>İlerleme</h5>
-                            <h3>
-                                %{{ $yuzde }}
-                            </h3>
-                        </div>
+    <div class="col-lg col-md-6">
 
+        <div class="card dashboard-card">
 
-                    </div>
+            <div class="card-top"></div>
 
+            <div class="card-body">
 
-                @else
+                <i class="bi bi-journal-text"></i>
 
-                    <div class="alert alert-warning">
+                <h2>{{ $toplamGunluk }}</h2>
 
-                        Henüz staj bilgilerinizi girmediniz.
-
-                        <br>
-
-                        Profil bölümünden staj tarihlerinizi ekleyebilirsiniz.
-
-                    </div>
-
-                @endif
-
+                <p>Toplam Günlük</p>
 
             </div>
 
@@ -98,84 +157,254 @@
     </div>
 
 </div>
-    <div class="row">
 
-        <div class="col-md-4 mb-3">
-            <div class="card text-center shadow-sm">
-                <div class="card-body">
-                    <h5>Toplam Günlük</h5>
-                    <h2>{{ $toplamGunluk }}</h2>
-                </div>
-            </div>
-        </div>
 
-    </div>
+{{-- STAJ DURUMU + HIZLI İŞLEMLER --}}
+<div class="row mb-5">
 
-    <div class="mt-4 mb-3">
-        <h4>Hızlı İşlemler</h4>
-    </div>
+<div class="col-lg-8">
 
-    <div class="d-flex gap-2 mb-5">
-        <a href="{{ route('gunlukler.create') }}" class="btn btn-success">
-            Yeni Günlük Ekle
-        </a>
+<div class="card h-100">
 
-        <a href="{{ route('gunlukler.index') }}" class="btn btn-primary">
-            Günlüklerim
-        </a>
+<div class="card-top"></div>
 
-        <a href="/profil" class="btn btn-secondary">
-            Profilim
-        </a>
-    </div>
+<div class="card-body">
 
-    <h4 class="mb-3">Son Eklenen Günlükler</h4>
+<h4 class="text-bordo fw-bold mb-4">
 
-    @if($gunlukler->count())
+<i class="bi bi-bar-chart-line-fill"></i>
 
-        <div class="row">
+Staj İlerlemesi
 
-            @foreach($gunlukler as $gunluk)
+</h4>
 
-                <div class="col-md-6 mb-3">
+<div class="row mb-4">
 
-                    <div class="card shadow-sm">
+<div class="col-md-6">
 
-                        <div class="card-body">
+<strong>Başlangıç Tarihi</strong>
 
-                            <h5>{{ $gunluk->baslik }}</h5>
+<p>{{ $staj->baslangic_tarihi }}</p>
 
-                            <p>
-                                <p>{{ $gunluk->aciklama }}</p>
-                            </p>
+</div>
 
-                            <small class="text-muted">
-                                {{ $gunluk->tarih }}
-                            </small>
+<div class="col-md-6">
 
-                            <div class="mt-3">
-                                <a href="{{ route('gunlukler.edit', $gunluk->id) }}" class="btn btn-warning btn-sm">
-                                    Düzenle
-                                </a>
-                            </div>
+<strong>Bitiş Tarihi</strong>
 
-                        </div>
+<p>{{ $staj->bitis_tarihi }}</p>
 
-                    </div>
+</div>
 
-                </div>
+</div>
 
-            @endforeach
+<div class="progress mb-3">
 
-        </div>
+<div class="progress-bar"
 
-    @else
+style="width:{{ $yuzde }}%;">
 
-        <div class="alert alert-info">
-            Henüz günlük eklemediniz.
-        </div>
+{{ $yuzde }}%
 
-    @endif
+</div>
+
+</div>
+
+<div class="d-flex justify-content-between">
+
+<small>0 Gün</small>
+
+<small>{{ $toplamStajGunu }} Gün</small>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4">
+
+<div class="card h-100">
+
+<div class="card-top"></div>
+
+<div class="card-body">
+
+<h4 class="text-bordo fw-bold mb-4">
+
+⚡ Hızlı İşlemler
+
+</h4>
+
+<div class="d-grid gap-3">
+
+<a href="{{ route('gunlukler.create') }}"
+
+class="btn btn-primary">
+
+<i class="bi bi-plus-circle"></i>
+
+Yeni Günlük
+
+</a>
+
+<a href="{{ route('gunlukler.index') }}"
+
+class="btn btn-secondary">
+
+<i class="bi bi-journal-text"></i>
+
+Günlüklerim
+
+</a>
+
+<a href="/profil"
+
+class="btn btn-outline-secondary">
+
+<i class="bi bi-person-circle"></i>
+
+Profilim
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+@else
+
+<div class="alert alert-warning">
+
+Henüz staj tarihlerini girmedin.
+
+Profil sayfasından başlangıç ve bitiş tarihlerini ekleyebilirsin.
+
+</div>
+
+@endif
+
+
+
+{{-- SON GÜNLÜKLER --}}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h4 class="fw-bold text-bordo">
+
+<i class="bi bi-clock-history"></i>
+
+Son Günlükler
+
+</h4>
+
+<a href="{{ route('gunlukler.index') }}"
+
+class="btn btn-primary">
+
+Tümünü Gör
+
+</a>
+
+</div>
+
+
+@if($gunlukler->count())
+
+<div class="row">
+
+@foreach($gunlukler as $gunluk)
+
+<div class="col-lg-6 mb-4">
+
+<div class="card h-100">
+
+<div class="card-top"></div>
+
+<div class="card-body">
+
+<h5 class="fw-bold text-bordo">
+
+{{ $gunluk->baslik }}
+
+</h5>
+
+<hr>
+
+<p class="text-secondary">
+
+{{ Str::limit($gunluk->aciklama,120) }}
+
+</p>
+
+</div>
+
+<div class="card-footer bg-white border-0 d-flex justify-content-between">
+
+<small>
+
+<i class="bi bi-calendar3"></i>
+
+{{ $gunluk->tarih }}
+
+</small>
+
+<a href="{{ route('gunlukler.edit',$gunluk->id) }}"
+
+class="btn btn-primary btn-sm">
+
+Düzenle
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+@endforeach
+
+</div>
+
+@else
+
+<div class="card">
+
+<div class="card-body text-center py-5">
+
+<i class="bi bi-journal-x"
+
+style="font-size:60px;color:#999;"></i>
+
+<h5 class="mt-3">
+
+Henüz günlük eklemediniz.
+
+</h5>
+
+<a href="{{ route('gunlukler.create') }}"
+
+class="btn btn-primary mt-3">
+
+İlk Günlüğü Oluştur
+
+</a>
+
+</div>
+
+</div>
+
+@endif
 
 </div>
 

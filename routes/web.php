@@ -36,7 +36,6 @@ Route::controller(AuthController::class)
     });
 
 
-
 Route::controller(AuthController::class)
     ->middleware('auth')
     ->group(function () {
@@ -44,16 +43,22 @@ Route::controller(AuthController::class)
         Route::post('/logout', 'logout')->name('logout');
 
         Route::get('/AnaSayfa', [SayfaController::class, 'anasayfa'])
-    ->name('anasayfa');
+        ->name('dashboard');
 
         Route::get('/profil', 'profil');
+
         Route::post('/profil', 'profilGuncelle');
+
         Route::post('/profil/staj',
-    [AuthController::class,'stajGuncelle'])
-    ->name('profil.staj');
+        [AuthController::class,'stajGuncelle'])
+        ->name('profil.staj');
+
+
+        // Profil fotoğrafı
+        Route::post('/profil/fotograf', 'profilFotograf')
+        ->name('profil.fotograf');
 
     });
-
 
 
 

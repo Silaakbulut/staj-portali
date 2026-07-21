@@ -24,36 +24,63 @@ class SayfaController extends Controller
 
     $staj = $user->staj;
 
+$toplamStajGunu = null;
+$tamamlananGun = 0;
+$eksikGun = null;
+$yuzde = null;
+$eksikGunler = [];
 
-    $toplamStajGunu = null;
-    $tamamlananGun = $toplamGunluk;
-    $eksikGun = null;
-    $yuzde = null;
+
+   if($staj)
+{
+
+    $baslangic = Carbon::parse($staj->baslangic_tarihi);
+
+    $bitis = Carbon::parse($staj->bitis_tarihi);
+
+    $toplamStajGunu = $baslangic->diffInDays($bitis) + 1;
+
+    $girilenTarihler = $user->gunlukler()
+        ->pluck('tarih')
+        ->map(function($tarih){
+
+            return Carbon::parse($tarih)
+                ->format('Y-m-d');
+
+        });
 
 
-    if($staj)
+
+    
+    $tamamlananGun = $girilenTarihler->count();
+
+
+    $eksikGun = $toplamStajGunu - $tamamlananGun;
+    $donem = Carbon::parse($staj->baslangic_tarihi)
+    ->daysUntil($staj->bitis_tarihi);
+
+
+foreach($donem as $gun)
+{
+
+    $tarih = $gun->format('Y-m-d');
+
+
+    if(!$girilenTarihler->contains($tarih))
     {
-
-        $baslangic = Carbon::parse($staj->baslangic_tarihi);
-
-        $bitis = Carbon::parse($staj->bitis_tarihi);
-
-
-        $toplamStajGunu = $baslangic->diffInDays($bitis) + 1;
-
-
-        $eksikGun = $toplamStajGunu - $tamamlananGun;
-
-
-        if($toplamStajGunu > 0)
-        {
-            $yuzde = round(
-                ($tamamlananGun / $toplamStajGunu) * 100
-            );
-        }
-
+        $eksikGunler[] = $tarih;
     }
 
+}
+
+    if($toplamStajGunu > 0)
+    {
+        $yuzde = round(
+            ($tamamlananGun / $toplamStajGunu) * 100
+        );
+    }
+
+}
 
     return view('anasayfa', compact(
         'gunlukler',
@@ -62,7 +89,9 @@ class SayfaController extends Controller
         'toplamStajGunu',
         'tamamlananGun',
         'eksikGun',
-        'yuzde'
+        'yuzde',
+        'eksikGunler'
+
     ));
 }
 }

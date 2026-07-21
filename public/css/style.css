@@ -1,0 +1,757 @@
+/* ===========================================
+   STAJ PORTALI
+   Tema : Bordo & Gri
+=========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f3f4f6;
+    font-family:'Segoe UI',sans-serif;
+    color:#444;
+}
+
+
+/* ==========================
+        Layout
+========================== */
+
+.wrapper{
+    display:flex;
+    min-height:100vh;
+}
+
+.main{
+    margin-left:270px;
+    width:100%;
+}
+
+.content{
+    padding:35px;
+}
+
+
+/* ==========================
+        Sidebar
+========================== */
+
+.sidebar{
+
+    position:fixed;
+    left:0;
+    top:0;
+
+    width:270px;
+    height:100vh;
+
+    background:#800020;
+
+    display:flex;
+    flex-direction:column;
+
+    color:white;
+
+    padding:25px;
+
+    box-shadow:5px 0 20px rgba(0,0,0,.08);
+
+}
+
+
+.sidebar-header{
+
+    text-align:center;
+    margin-bottom:25px;
+
+}
+
+.logo-circle{
+
+    width:90px;
+    height:90px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.logo-circle i{
+
+    font-size:42px;
+
+}
+
+.sidebar-header h4{
+
+    margin-top:18px;
+    font-weight:bold;
+    letter-spacing:1px;
+
+}
+
+.sidebar-header small{
+
+    opacity:.8;
+
+}
+
+.sidebar-divider{
+
+    border-color:rgba(255,255,255,.2);
+
+    margin:20px 0;
+
+}
+
+
+.sidebar-menu{
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+}
+
+
+.sidebar-menu a{
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+
+    gap:15px;
+
+    transition:.3s;
+
+    font-size:16px;
+
+}
+
+
+.sidebar-menu a i{
+
+    font-size:20px;
+
+}
+
+
+.sidebar-menu a:hover{
+
+    background:rgba(255,255,255,.12);
+
+    transform:translateX(6px);
+
+}
+
+
+.sidebar-menu a.active{
+
+    background:white;
+
+    color:#800020;
+
+    font-weight:bold;
+
+}
+
+
+.sidebar-bottom{
+
+    margin-top:auto;
+
+}
+
+
+.logout-btn{
+
+    color:#ffe5e5 !important;
+
+}
+
+
+.logout-btn:hover{
+
+    background:white;
+
+    color:#800020 !important;
+
+}
+
+
+/* ==========================
+        Header
+========================== */
+
+.topbar{
+
+    height:80px;
+
+    background:white;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 35px;
+
+    box-shadow:0 2px 15px rgba(0,0,0,.05);
+
+}
+
+
+.topbar h4{
+
+    color:#800020;
+
+    font-weight:700;
+
+}
+
+
+.user-area{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-weight:600;
+
+    color:#666;
+
+}
+
+.user-area i{
+
+    color:#800020;
+
+    font-size:24px;
+
+}
+
+
+/* ==========================
+          Card
+========================== */
+
+.card{
+
+    border:none;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:white;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+
+    transition:.3s;
+
+}
+
+
+.card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.10);
+
+}
+
+
+.card-top{
+
+    height:6px;
+
+    background:#800020;
+
+}
+
+
+/* ==========================
+     Dashboard Cards
+========================== */
+
+.dashboard-card{
+
+    text-align:center;
+
+}
+
+
+.dashboard-card i{
+
+    font-size:50px;
+
+    color:#800020;
+
+}
+
+
+.dashboard-card h2{
+
+    color:#800020;
+
+    font-weight:700;
+
+    margin-top:12px;
+
+}
+
+
+.dashboard-card p{
+
+    color:#666;
+
+}
+
+
+/* ==========================
+     Action Cards
+========================== */
+
+.action-card{
+
+    text-align:center;
+
+    cursor:pointer;
+
+}
+
+
+.action-card i{
+
+    font-size:55px;
+
+    color:#800020;
+
+}
+
+
+.action-card h5{
+
+    margin-top:18px;
+
+    color:#800020;
+
+    font-weight:700;
+
+}
+
+
+.action-card p{
+
+    color:#777;
+
+}
+
+
+/* ==========================
+        Progress
+========================== */
+
+.progress{
+
+    height:24px;
+
+    border-radius:30px;
+
+    background:#ddd;
+
+}
+
+.progress-bar{
+
+    background:#800020;
+
+    font-weight:bold;
+
+}
+
+
+/* ==========================
+        Buttons
+========================== */
+
+.btn{
+
+    border-radius:12px;
+
+    font-weight:600;
+
+}
+
+
+.btn-primary{
+
+    background:#800020;
+
+    border-color:#800020;
+
+}
+
+
+.btn-primary:hover{
+
+    background:#670019;
+
+    border-color:#670019;
+
+}
+
+
+.btn-secondary{
+
+    background:#666;
+
+    border-color:#666;
+
+}
+
+
+.btn-secondary:hover{
+
+    background:#555;
+
+}
+
+
+/* ==========================
+        Forms
+========================== */
+
+.form-control{
+
+    border-radius:12px;
+
+}
+
+
+.form-control:focus{
+
+    border-color:#800020;
+
+    box-shadow:0 0 0 .15rem rgba(128,0,32,.18);
+
+}
+
+
+/* ==========================
+        Tables
+========================== */
+
+.table{
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+}
+
+
+.table thead{
+
+    background:#800020;
+
+    color:white;
+
+}
+
+
+/* ==========================
+        Helpers
+========================== */
+
+.text-bordo{
+
+    color:#800020;
+
+}
+
+.bg-bordo{
+
+    background:#800020;
+
+}
+
+.border-bordo{
+
+    border:1px solid #800020;
+
+}
+
+.icon-bordo{
+
+    color:#800020;
+
+}
+
+.icon-gri{
+
+    color:#666;
+
+}
+
+.alert{
+
+    border:none;
+
+    border-radius:15px;
+
+}
+.sidebar-menu{
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+}
+
+.sidebar-menu a{
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    color:white;
+
+    transition:.25s;
+
+    font-size:15px;
+
+    font-weight:500;
+
+}
+
+.sidebar-menu a i{
+
+    font-size:20px;
+
+    width:25px;
+
+}
+
+.sidebar-menu a:hover{
+
+    background:rgba(255,255,255,.12);
+
+    transform:translateX(6px);
+
+}
+
+.sidebar-menu a.active{
+
+    background:white;
+
+    color:#800020;
+
+    font-weight:700;
+
+}
+
+.sidebar-menu a.active i{
+
+    color:#800020;
+
+}
+
+.sidebar-bottom{
+
+    margin-top:auto;
+
+}
+
+.logout-btn{
+
+    width:100%;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    transition:.3s;
+
+    font-weight:600;
+
+}
+
+.logout-btn:hover{
+
+    background:white;
+
+    color:#800020;
+
+}
+
+.logout-btn i{
+
+    margin-right:8px;
+
+}
+/* ===================================
+           HEADER
+=================================== */
+
+.topbar{
+
+    height:85px;
+
+    background:white;
+
+    padding:0 35px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-bottom:1px solid #ececec;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.05);
+
+}
+
+.topbar h4{
+
+    color:#800020;
+
+}
+
+.user-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.user-avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    background:#800020;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-weight:bold;
+
+    font-size:18px;
+
+    box-shadow:0 5px 12px rgba(128,0,32,.25);
+
+}
+.card-top{
+    height:6px;
+    background:#800020;
+}
+
+.badge.bg-secondary{
+    background:#6c757d !important;
+}
+
+.input-group-text{
+    border-radius:12px 0 0 12px;
+}
+
+.input-group .form-control{
+    border-left:none;
+}
+
+.card-footer{
+    border-top:1px solid #eee !important;
+    padding:18px;
+}
+
+.btn-danger{
+    border-radius:12px;
+}
+
+.btn-danger:hover{
+    transform:translateY(-2px);
+}
+
+.dashboard-card hr{
+    opacity:.12;
+}
+/* PROFİL */
+
+.profile-avatar{
+
+    width:110px;
+
+    height:110px;
+
+    border-radius:50%;
+
+    background:#800020;
+
+    color:white;
+
+    margin:auto;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:55px;
+
+    box-shadow:0 10px 25px rgba(128,0,32,.20);
+
+}
+
+.form-label{
+
+    font-weight:600;
+
+    color:#555;
+
+}
