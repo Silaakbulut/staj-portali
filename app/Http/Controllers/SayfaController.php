@@ -1,24 +1,68 @@
 <?php
 
 namespace App\Http\Controllers;
-//use App\Models\Ogrenci;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class SayfaController extends Controller
 {
-  /*  public function hakkimizda(){
-        $ad ="Sıla";
-        return view('hakkimizda',compact('ad','yas'));}
+    public function anasayfa()
+{
+    $user = Auth::user();
 
-        public function hakkimizda(){
-$ogrenciler = ["Sıla","Merve","Ayşe"];
-return view('hakkimizda',compact('ogrenciler'));
 
+    $gunlukler = $user->gunlukler()
+        ->latest()
+        ->take(5)
+        ->get();
+
+
+    $toplamGunluk = $user->gunlukler()->count();
+
+
+    $staj = $user->staj;
+
+
+    $toplamStajGunu = null;
+    $tamamlananGun = $toplamGunluk;
+    $eksikGun = null;
+    $yuzde = null;
+
+
+    if($staj)
+    {
+
+        $baslangic = Carbon::parse($staj->baslangic_tarihi);
+
+        $bitis = Carbon::parse($staj->bitis_tarihi);
+
+
+        $toplamStajGunu = $baslangic->diffInDays($bitis) + 1;
+
+
+        $eksikGun = $toplamStajGunu - $tamamlananGun;
+
+
+        if($toplamStajGunu > 0)
+        {
+            $yuzde = round(
+                ($tamamlananGun / $toplamStajGunu) * 100
+            );
         }
-        public function ogrenciler(){
-            $ogrenciler=Ogrenci::all();//veritabanındaki tüm öğrencileri alır
-            return view('ogrenciler',compact('ogrenciler'));//ogrenciler.blade.php sayfasına gönderir
-        }
-*/
+
     }
 
+
+    return view('anasayfa', compact(
+        'gunlukler',
+        'toplamGunluk',
+        'staj',
+        'toplamStajGunu',
+        'tamamlananGun',
+        'eksikGun',
+        'yuzde'
+    ));
+}
+}

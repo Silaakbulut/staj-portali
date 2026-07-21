@@ -50,4 +50,8 @@ public function isAdmin()
 {
     return $this->role === 'admin';
 }
+public function staj()
+{
+    return $this->hasOne(Staj::class);
+}
 }

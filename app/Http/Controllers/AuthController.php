@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Staj;
 
 class AuthController extends Controller
 {
@@ -70,18 +71,67 @@ public function profil()
 }
 public function profilGuncelle(Request $request)
 {
-    $request->validate([
-        'name' => 'required|max:255',
-        'email' => 'required|email|unique:users,email,' . Auth::id(),
-    ]);
+   $request->validate([
+    'name' => 'required|max:255',
+    'email' => 'required|email|unique:users,email,' . Auth::id(),
+
+    'mevcut_sifre' => 'nullable',
+    'yeni_sifre' => 'nullable|min:6|confirmed',
+]);
 
     $kullanici = Auth::user();
 
     $kullanici->name = $request->name;
     $kullanici->email = $request->email;
+    if ($request->filled('yeni_sifre')) {
+
+    if (!Hash::check($request->mevcut_sifre, $kullanici->password)) {
+
+        return back()->withErrors([
+            'mevcut_sifre' => 'Mevcut şifre yanlış.'
+        ]);
+
+    }
+
+    $kullanici->password = Hash::make($request->yeni_sifre);
+
+}
 
     $kullanici->save();
 
     return back()->with('success', 'Profil başarıyla güncellendi.');
+}
+public function stajGuncelle(Request $request)
+{
+
+    $request->validate([
+
+        'baslangic_tarihi'=>'required|date',
+
+        'bitis_tarihi'=>'required|date|after_or_equal:baslangic_tarihi'
+
+    ]);
+
+
+    Staj::updateOrCreate(
+
+        [
+            'user_id'=>Auth::id()
+        ],
+
+        [
+            'baslangic_tarihi'=>$request->baslangic_tarihi,
+
+            'bitis_tarihi'=>$request->bitis_tarihi
+        ]
+
+    );
+
+
+    return back()->with(
+        'success',
+        'Staj bilgileri güncellendi.'
+    );
+
 }
 }

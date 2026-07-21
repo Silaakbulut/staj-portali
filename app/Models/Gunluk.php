@@ -14,7 +14,8 @@ class Gunluk extends Model
     'aciklama',
     'sorun',
     'cozum',
-    'tarih'
+    'tarih',
+    'dosya'
 ];
 
 

@@ -8,43 +8,59 @@
 
 <table class="table">
 
-<thead>
-<tr>
-<th>Ad</th>
-<th>Email</th>
-</tr>
-</thead>
+    <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Email</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
 
+    <tbody>
 
-<tbody>
+    @foreach($ogrenciler as $ogrenci)
 
-@foreach($ogrenciler as $ogrenci)
+        <tr>
 
-<tr>
+            <td>{{ $ogrenci->name }}</td>
 
-<td>
-{{ $ogrenci->name }}
-</td>
+            <td>{{ $ogrenci->email }}</td>
 
-<td>
-{{ $ogrenci->email }}
-</td>
+            <td>
 
-<td>
-    <a href="{{ route('admin.ogrenci.show', $ogrenci->id) }}"
-       class="btn btn-primary btn-sm">
-        Detay
-    </a>
-</td>
+                <a href="{{ route('admin.ogrenci.show', $ogrenci->id) }}"
+                   class="btn btn-primary btn-sm">
+                    Detay
+                </a>
 
-</tr>
+                <form action="{{ route('admin.ogrenci.destroy', $ogrenci->id) }}"
+                      method="POST"
+                      style="display:inline;">
 
-@endforeach
+                    @csrf
+                    @method('DELETE')
 
+                    <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Bu öğrenciyi silmek istediğinize emin misiniz?')">
 
-</tbody>
+                        Sil
+
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+    @endforeach
+
+    </tbody>
 
 </table>
+
 {{ $ogrenciler->links() }}
 
 </div>

@@ -43,12 +43,14 @@ Route::controller(AuthController::class)
 
         Route::post('/logout', 'logout')->name('logout');
 
-        Route::get('/AnaSayfa', function () {
-            return view('anasayfa');
-        });
+        Route::get('/AnaSayfa', [SayfaController::class, 'anasayfa'])
+    ->name('anasayfa');
 
         Route::get('/profil', 'profil');
         Route::post('/profil', 'profilGuncelle');
+        Route::post('/profil/staj',
+    [AuthController::class,'stajGuncelle'])
+    ->name('profil.staj');
 
     });
 
@@ -73,6 +75,10 @@ Route::prefix('gunlukler')
 
     });
     Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/admin/gunlukler/{gunluk}', [AdminController::class, 'gunlukDetay'])
+    ->name('admin.gunluk.detay');
+        Route::get('/admin/gunlukler', [AdminController::class, 'gunlukler'])
+    ->name('admin.gunlukler');
         Route::get('/admin/ogrenciler/{user}', [AdminController::class, 'ogrenciDetay'])
     ->name('admin.ogrenci.show');
         Route::get('/admin/ogrenciler', [AdminController::class, 'ogrenciler'])
@@ -80,5 +86,10 @@ Route::prefix('gunlukler')
 
     Route::get('/admin', [AdminController::class, 'index'])
         ->name('admin.index');
+        Route::delete('/admin/ogrenciler/{user}', [AdminController::class, 'ogrenciSil'])
+    ->name('admin.ogrenci.destroy');
+    Route::delete('/admin/gunlukler/{gunluk}',
+    [AdminController::class, 'gunlukSil'])
+    ->name('admin.gunluk.destroy');
 
 });

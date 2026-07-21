@@ -5,37 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Gunluk;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class GunlukController extends Controller
 {
-   public function index()
+  public function index(Request $request)
 {
-    $gunlukler = Auth::user()->gunlukler;
+    $query = Auth::user()->gunlukler();
+
+    if ($request->filled('arama')) {
+        $query->where('baslik', 'like', '%' . $request->arama . '%');
+    }
+
+    $gunlukler = $query
+        ->latest()
+        ->paginate(5)
+        ->appends($request->query());
 
     return view('gunlukler.index', compact('gunlukler'));
 }
 public function create(){
     return view('gunlukler.create');
     }
-   public function store(Request $request)//requestten gelen verileri alır ve doğrular.request formdan gelen bilgileri taşıyan,onları conrollera getiren nesne
+  public function store(Request $request)
 {
     $request->validate([
-        'baslik'=>'required',//required: alanın boş olamayacağını belirtir
-        'aciklama'=>'required',
-        'tarih'=>'required'
+        'baslik' => 'required',
+        'aciklama' => 'required',
+        'tarih' => 'required',
+        'dosya' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120'
     ]);
 
+    $dosyaYolu = null;
+
+    if ($request->hasFile('dosya')) {
+        $dosyaYolu = $request->file('dosya')->store('gunlukler', 'public');
+    }
 
     Auth::user()->gunlukler()->create([
-        'baslik'=>$request->baslik,
-        'aciklama'=>$request->aciklama,
-        'sorun'=>$request->sorun,
-        'cozum'=>$request->cozum,
-        'tarih'=>$request->tarih
+        'baslik'   => $request->baslik,
+        'aciklama' => $request->aciklama,
+        'sorun'    => $request->sorun,
+        'cozum'    => $request->cozum,
+        'dosya'    => $dosyaYolu,
+        'tarih'    => $request->tarih
     ]);
 
-
-    return redirect('/gunlukler');
+    return redirect()->route('gunlukler.index')
+        ->with('success', 'Günlük başarıyla eklendi.');
 }
  public function edit($id){
  $gunluk = Auth::user()->gunlukler()->findOrFail($id);
@@ -59,7 +77,8 @@ public function create(){
         'tarih'=>$request->tarih
     ]);
 
-    return redirect()->route('gunlukler.index');
+    return redirect()->route('gunlukler.index')
+    ->with('success', 'Günlük başarıyla güncellendi.');
 
  }
    public function destroy($id)
@@ -70,7 +89,8 @@ public function create(){
 
     $gunluk->delete();
 
-    return redirect()->route('gunlukler.index');
+    return redirect()->route('gunlukler.index')
+    ->with('success', 'Günlük başarıyla silindi.');
 
 
 }

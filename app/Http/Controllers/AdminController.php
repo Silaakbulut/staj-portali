@@ -44,4 +44,38 @@ public function ogrenciDetay(User $user)
 
     return view('admin.ogrenci-detay', compact('user', 'gunlukler'));
 }
+public function gunlukler()
+{
+    $gunlukler = Gunluk::with('user')
+        ->latest()
+        ->paginate(10);
+
+    return view('admin.gunlukler', compact('gunlukler'));
+}
+public function gunlukDetay(Gunluk $gunluk)
+{
+    return view('admin.gunluk-detay', compact('gunluk'));
+}
+public function ogrenciSil(User $user)
+
+{
+    if ($user->id == auth()->id()) {
+    return back()->with('error', 'Kendi hesabınızı silemezsiniz.');
+}
+
+    if ($user->role == 'admin') {
+        return back()->with('error', 'Admin kullanıcısı silinemez.');
+    }
+
+ $user->delete();
+
+    return back()->with('success', 'Öğrenci başarıyla silindi.');
+}
+public function gunlukSil(Gunluk $gunluk)
+{
+    $gunluk->delete();
+    
+
+    return back()->with('success', 'Günlük başarıyla silindi.');
+}
 }

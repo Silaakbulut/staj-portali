@@ -2,77 +2,65 @@
 
 @section('content')
 
-<h2 class="mb-4">Günlüklerim</h2>
+<div class="container">
 
-<a href="{{ route('gunlukler.create') }}" class="btn btn-success mb-3">
-    + Yeni Günlük Ekle
-</a>
+<h2 class="mb-4">Yeni Günlük Ekle</h2>
 
-<hr>
+<form action="{{ route('gunlukler.store') }}"
+      method="POST"
+      enctype="multipart/form-data">
 
-@if($gunlukler->isEmpty())
+@csrf
 
-    <p>Henüz günlük eklemediniz.</p>
+<div class="mb-3">
+    <label>Başlık</label>
+    <input type="text" 
+           name="baslik" 
+           class="form-control">
+</div>
 
-@else
 
-    @foreach($gunlukler as $gunluk)
+<div class="mb-3">
+    <label>Açıklama</label>
+    <textarea name="aciklama"
+              class="form-control"></textarea>
+</div>
 
-        <div class="card mb-3">
 
-            <div class="card-body">
+<div class="mb-3">
+    <label>Tarih</label>
+    <input type="date"
+           name="tarih"
+           class="form-control">
+</div>
 
-                <h4 class="card-title">
-                    {{ $gunluk->baslik }}
-                </h4>
+<div class="mb-3">
 
-                <p class="text-muted">
-                    <strong>Tarih:</strong>
-                    {{ $gunluk->tarih }}
-                </p>
+    <label class="form-label">Staj Belgesi (PDF, Word veya Resim)</label>
 
-                <p class="card-text">
-                    {{ $gunluk->aciklama }}
-                </p>
+    <input
+        type="file"
+        name="dosya"
+        class="form-control">
 
-                @if($gunluk->sorun)
-                    <p>
-                        <strong>Sorun:</strong>
-                        {{ $gunluk->sorun }}
-                    </p>
-                @endif
+</div>
 
-                @if($gunluk->cozum)
-                    <p>
-                        <strong>Çözüm:</strong>
-                        {{ $gunluk->cozum }}
-                    </p>
-                @endif
 
-                <a href="{{ route('gunlukler.edit', $gunluk->id) }}"
-                   class="btn btn-warning">
-                    Düzenle
-                </a>
+<button class="btn btn-success">
+    Kaydet
+</button>
 
-                <form action="{{ route('gunlukler.destroy', $gunluk->id) }}"
-                      method="POST"
-                      style="display:inline;">
 
-                    @csrf
-                    @method('DELETE')
+</form>
 
-                    <button type="submit" class="btn btn-danger">
-                        Sil
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    @endforeach
-
+</div>
+@if ($errors->any())
+    <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
 @endif
+
 
 @endsection

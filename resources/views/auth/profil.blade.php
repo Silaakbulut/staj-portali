@@ -42,6 +42,67 @@
     <button type="submit">Güncelle</button>
 
 </form>
+<hr>
+
+<h3>Staj Bilgileri</h3>
+
+<form action="{{ route('profil.staj') }}" method="POST">
+
+    @csrf
+
+    <div>
+        <label>
+            Staj Başlangıç Tarihi
+        </label>
+
+        <input 
+            type="date"
+            name="baslangic_tarihi"
+            value="{{ $kullanici->staj->baslangic_tarihi ?? '' }}">
+    </div>
+
+
+    <br>
+
+
+    <div>
+        <label>
+            Staj Bitiş Tarihi
+        </label>
+
+        <input 
+            type="date"
+            name="bitis_tarihi"
+            value="{{ $kullanici->staj->bitis_tarihi ?? '' }}">
+    </div>
+
+
+    <br>
+
+
+    <button type="submit">
+        Staj Bilgilerini Kaydet
+    </button>
+
+</form>
+<hr>
+
+<h4>Şifre Değiştir</h4>
+
+<div class="mb-3">
+    <label>Mevcut Şifre</label>
+    <input type="password" name="mevcut_sifre" class="form-control">
+</div>
+
+<div class="mb-3">
+    <label>Yeni Şifre</label>
+    <input type="password" name="yeni_sifre" class="form-control">
+</div>
+
+<div class="mb-3">
+    <label>Yeni Şifre (Tekrar)</label>
+    <input type="password" name="yeni_sifre_confirmation" class="form-control">
+</div>
 
 </body>
 </html>
